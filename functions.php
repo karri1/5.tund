@@ -1,28 +1,6 @@
 <?php
 
- /*funktsioonide näited
- 
- function sum ($x, $y) {
-	 
-	 return $x + $y;	 
- }
- 
- echo sum(20, 20);
- echo "<br>";
- echo sum(15, 15);
-
- function hello ($eesnimi, $perenimi) {
-	 
-	 return "Tere tulemast "  .$eesnimi . " " .$perenimi;
-		
-}
-echo "<br>";
-echo hello ("Peeter", "Puravik");
-
-********************************************
-*/
-
-// see fail peab olema kõigil lehtedel, kus tahan kasutada SESSION muutujat
+require("../../config.php");
 session_start();
 
 function signUp ($email, $password) {
@@ -80,6 +58,7 @@ function login($email, $password){
 				//määran sessiooni muutujad, millele saan ligi teistelt lehtedelt
 				$_SESSION["userId"] = $id;
 				$_SESSION["userEmail"] = $emailFromDb;
+				$_SESSION["message"] = "<h1>Tere tulemast!</h1>";
 				header("Location: data.php");
 			}else {
 				$error = "vale parool";
@@ -95,5 +74,26 @@ function login($email, $password){
 		return $error;
 	}
 
+function saveCar ($plate, $color) {
+		
+		$database = "if16_romil";
+		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
+
+		$stmt = $mysqli->prepare("INSERT INTO cars_and_colors (plate, color) VALUES (?, ?)");
+	
+		echo $mysqli->error;
+		
+		$stmt->bind_param("ss", $plate, $color);
+		
+		if($stmt->execute()) {
+			echo "salvestamine õnnestus";
+		} else {
+		 	echo "ERROR ".$stmt->error;
+		}
+		
+		$stmt->close();
+		$mysqli->close();
+		
+	}
 ?>
 

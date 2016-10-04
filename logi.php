@@ -104,38 +104,15 @@
 		
 		signUp($signupEmail, $password);
 		
-		/*ÜHENDUS
-		$database = "if16_karin";
-		$mysqli = new mysqli($serverHost, $serverUsername, $serverPassword, $database);
 		
-		//SQLI'I RIDA
-		$stmt = $mysqli->prepare("INSERT INTO user_sample (email, password) VALUES (?, ?)");
-		
-		echo $mysqli -> error;   //see on igaks juhuks
-		
-		//stringina üks täht iga muutuja kohta (?, ?), mis tüüp
-		// string - s
-		// integer - i
-		// float (double) - d
-		//küsimärgid asendada muutujaga
-		$stmt -> bind_param("ss", $signupEmail, $password ); 
-
-		if ($stmt->execute()) {;
-			echo "salvestamine õnnestus";
-		} else {
-			echo "ERROR ".$stmt->error;
-		}
-		
-		//panen ühenduse kinni
-		$stmt->close();
-		$mysqli->close();
-		*/
 	}
+	
+	
 	$error = "";
 	if ( isset($_POST["loginEmail"]) && isset($_POST["loginPassword"]) && 
 		!empty($_POST["loginEmail"]) && !empty($_POST["loginPassword"])
 	  ) {
-		  echo "siin";
+		  
 		$error = login($_POST["loginEmail"], $_POST["loginPassword"]);
 		  
 	}
