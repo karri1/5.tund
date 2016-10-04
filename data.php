@@ -14,13 +14,14 @@ if (isset($_GET["logout"])) {
 		header("Location: logi.php");
 }
 
-$msg = "";
+	$msg = "";
 	if(isset($_SESSION["message"])){
 		$msg = $_SESSION["message"];
 		
 		//kui ühe näitame siis kustuta ära, et pärast refreshi ei näitaks
 		unset($_SESSION["message"]);
 	}
+	
 	
 	if ( isset($_POST["plate"]) && 
 		isset($_POST["plate"]) && 
@@ -31,12 +32,18 @@ $msg = "";
 		saveCar($_POST["plate"], $_POST["color"]);
 		
 	}
+	
+	//saan kõik auto andmed
+	$carData = getAllCars();
+	echo "<pre>";
+	var_dump($carData);
+	echo "</pre>";
 ?>
-
-<h1>See on data leht</h1>
+<h1>Data</h1>
 <?=$msg;?>
-<p>Tere tulemast <?=$_SESSION["userEmail"];?>!
-<a href = "?logout=1">Logi välja</a>
+<p>
+	Tere tulemast <?=$_SESSION["userEmail"];?>!
+	<a href="?logout=1">Logi välja</a>
 </p>
 
 
@@ -55,3 +62,54 @@ $msg = "";
 	
 	
 </form>
+
+<h2>Autod</h2>
+<?php 
+	
+	$html = "<table>";
+	
+	$html .= "<tr>";
+		$html .= "<th>id</th>";
+		$html .= "<th>plate</th>";
+		$html .= "<th>color</th>";
+	$html .= "</tr>";
+	
+	//iga liikme kohta massiivis
+	foreach($carData as $c){
+		// iga auto on $c
+		//echo $c->plate."<br>";
+		
+		$html .= "<tr>";
+			$html .= "<td>".$c->id."</td>";
+			$html .= "<td>".$c->plate."</td>";
+			$html .= "<td style='background-color:".$c->carColor."'>".$c->carColor."</td>";
+		$html .= "</tr>";
+	}
+	
+	$html .= "</table>";
+	
+	echo $html;
+	
+	
+	$listHtml = "<br><br>";
+	
+	foreach($carData as $c){
+		
+		
+		$listHtml .= "<h1 style='color:".$c->carColor."'>".$c->plate."</h1>";
+		$listHtml .= "<p>color = ".$c->carColor."</p>";
+	}
+	
+	echo $listHtml;
+	
+	
+	
+
+?>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+

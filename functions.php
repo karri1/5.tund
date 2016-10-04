@@ -76,7 +76,7 @@ function login($email, $password){
 
 function saveCar ($plate, $color) {
 		
-		$database = "if16_romil";
+		$database = "if16_karin";
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
 
 		$stmt = $mysqli->prepare("INSERT INTO cars_and_colors (plate, color) VALUES (?, ?)");
@@ -95,5 +95,44 @@ function saveCar ($plate, $color) {
 		$mysqli->close();
 		
 	}
-?>
-
+	
+	function getAllCars() {
+		
+		$database = "if16_karin";
+		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
+		
+		$stmt = $mysqli->prepare("
+			SELECT id, plate, color
+			FROM cars_and_colors
+		");
+		echo $mysqli->error;
+		
+		$stmt->bind_result($id, $plate, $color);
+		$stmt->execute();
+		
+		
+		//tekitan massiivi
+		$result = array();
+		
+		// tee seda seni, kuni on rida andmeid
+		// mis vastab select lausele
+		while ($stmt->fetch()) {
+			
+			//tekitan objekti
+			$car = new StdClass();
+			
+			$car->id = $id;
+			$car->plate = $plate;
+			$car->carColor = $color;
+			
+			//echo $plate."<br>";
+			// iga kord massiivi lisan juurde nr märgi
+			array_push($result, $car);
+		}
+		
+		$stmt->close();
+		$mysqli->close();
+		
+		return $result;
+	}
+	
